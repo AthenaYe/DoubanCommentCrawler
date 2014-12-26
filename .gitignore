@@ -1,4 +1,4 @@
 log
 *.pyc
 *.swp
-moviecomment
+doubanmovie/moviecomment
