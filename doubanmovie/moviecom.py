@@ -20,7 +20,7 @@ def comment(name, link, movieid):
         if 'comment' in CommentLink:
             break
     CommentLink = config.Suffix + CommentLink
-    CommentLink = 'http://m.douban.com/movie/subject/21318488/comments?page=1233'
+#    CommentLink = 'http://m.douban.com/movie/subject/21318488/comments?page=1233'
     moviec = pq(url=CommentLink)
     try:
         f = open(config.CommentDir+movieid, 'w')
