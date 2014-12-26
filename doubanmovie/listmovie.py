@@ -4,6 +4,7 @@ import sys
 from pyquery import PyQuery as pq
 import moviecom
 import config
+import re
 
 reload(sys)
 sys.setdefaultencoding('UTF-8')
@@ -27,8 +28,11 @@ while True:
         text = pq(divs).text()
         link = pq(divs).attr('href')
         if 'subject' in link:
-            link = link + Suffix
-            moviecom.comment(text, link)
+            print link
+            idnum = re.match('/movie/subject/(\d+)/', link).group(1)
+            link = config.Suffix + link
+            print text
+            moviecom.comment(text, link, idnum)
         elif text == u'下一页':
             PageLoad = link
  #           print PageLoad

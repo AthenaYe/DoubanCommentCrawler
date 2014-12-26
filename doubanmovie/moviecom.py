@@ -3,12 +3,14 @@
 import config
 import sys
 from pyquery import PyQuery as pq
+import re
+import json
 
 
 reload(sys)
-sys.setdefaultencoding('UTF-8')
+sys.setdefaultencoding('utf-8')
 
-def comment(name, link):
+def comment(name, link, movieid):
     movie = pq(url=link)
     aa = movie('a')
     CommentLink = None
@@ -18,15 +20,38 @@ def comment(name, link):
             break
     CommentLink = config.Suffix + CommentLink
     moviec = pq(url=CommentLink)
+    f = open(config.CommentDir+movieid, 'w')
     while True:
+
+        commentdict = {}
+
         Body = pq(moviec('div[class="list"]'))
         Body.pop()
         PageLoad = None
         CommentItems = Body('span')
         Page = Body('a')
         CommentItems.pop()
+        odd = 0
         for lines in CommentItems:
-            print pq(lines).text()
+            if odd % 2 == 1:
+                tmp = pq(lines).text()
+            #    print tmp
+                whole = re.match('-(.*) \(([1-5])', tmp)
+                if not whole:
+                    continue
+                user = whole.group(1)
+                star = int(whole.group(2))
+                if star in [1,5]:
+                    commentdict['moviename'] = name
+                    commentdict['movielink'] = link
+                    commentdict['user'] = user
+                    commentdict['rating'] = star
+                    f.write(json.dumps(commentdict, encoding="UTF-8", ensure_ascii=False))
+                    f.write('\n')
+                    commentdict.clear()
+            else:
+                commentdict['comment'] = pq(lines).text()
+            odd += 1
         for lines in Page:
 #            print pq(lines).text()
             if pq(lines).text() == u'下一页':
@@ -36,11 +61,9 @@ def comment(name, link):
                 break
         if PageLoad == None:
             break
+    f.close()
 
-
-
-
-
-comment(u'小时的爱人', 'http://m.douban.com/movie/subject/21318488/?session=55b6a7d1')
+if __name__ == '__main__':
+    comment(u'消失的爱人', 'http://m.douban.com/movie/subject/21318488/?session=55b6a7d1', '21318488')
 
 # vim: ts=4 sw=4 sts=4 expandtab
