@@ -24,7 +24,7 @@ def getLink(link):
     print CommentLink
     return CommentLink
 
-def makejson(CommentItems):
+def makejson(CommentItems, name, link, f):
     commentdict = {}
     odd = 0
     for lines in CommentItems:
@@ -59,7 +59,7 @@ def comment(name, link, movieid):
         return
     print "crawling movie:"+name
     countpage = 0
-    PageLoad = '' 
+    PageLoad = ''
     try:
         while True:
             countpage += 1
@@ -71,7 +71,7 @@ def comment(name, link, movieid):
             if CommentItems.size() < 4:
                 break
             CommentItems.pop()
-            makejson(CommentItems)
+            makejson(CommentItems, name, link, f)
 
             for lines in Page:
     #            print pq(lines).text()
@@ -86,7 +86,7 @@ def comment(name, link, movieid):
         os.system('chmod 444 '+ config.CommentDir+movieid)
     except:
         print "you mafan le!!"
-        print "page:"+ countpage 
+        print "page:"+ str(countpage)
         print PageLoad
         traceback.print_exc()
         return
