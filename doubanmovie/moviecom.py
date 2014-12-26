@@ -41,14 +41,14 @@ def comment(name, link, movieid):
                     continue
                 user = whole.group(1)
                 star = int(whole.group(2))
-                if star in [1,5]:
-                    commentdict['moviename'] = name
-                    commentdict['movielink'] = link
-                    commentdict['user'] = user
-                    commentdict['rating'] = star
-                    f.write(json.dumps(commentdict, encoding="UTF-8", ensure_ascii=False))
-                    f.write('\n')
-                    commentdict.clear()
+          #      if star in [1,5]:
+                commentdict['moviename'] = name
+                commentdict['movielink'] = link
+                commentdict['user'] = user
+                commentdict['rating'] = star
+                f.write(json.dumps(commentdict, encoding="UTF-8", ensure_ascii=False))
+                f.write('\n')
+                commentdict.clear()
             else:
                 commentdict['comment'] = pq(lines).text()
             odd += 1
