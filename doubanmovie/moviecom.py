@@ -19,8 +19,10 @@ def comment(name, link, movieid):
         if 'comment' in CommentLink:
             break
     CommentLink = config.Suffix + CommentLink
+    CommentLink = 'http://m.douban.com/movie/subject/21318488/comments?page=1233&session=f6e6885a'
     moviec = pq(url=CommentLink)
     f = open(config.CommentDir+movieid, 'w')
+    print "crawling movie:"+name
     while True:
 
         commentdict = {}
@@ -35,6 +37,8 @@ def comment(name, link, movieid):
         for lines in CommentItems:
             if odd % 2 == 1:
                 tmp = pq(lines).text()
+                if odd % 100 == 0:
+                    print odd
             #    print tmp
                 whole = re.match('-(.*) \(([1-5])', tmp)
                 if not whole:
@@ -64,6 +68,6 @@ def comment(name, link, movieid):
     f.close()
 
 if __name__ == '__main__':
-    comment(u'消失的爱人', 'http://m.douban.com/movie/subject/21318488/?session=55b6a7d1', '21318488')
+    comment(u'消失的爱人', 'http://m.douban.com/movie/subject/21318488/?session=55b6a7d1', 'ceshi')
 
 # vim: ts=4 sw=4 sts=4 expandtab
