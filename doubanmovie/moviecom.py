@@ -5,6 +5,7 @@ import sys
 from pyquery import PyQuery as pq
 import re
 import json
+import os
 
 
 reload(sys)
@@ -19,9 +20,12 @@ def comment(name, link, movieid):
         if 'comment' in CommentLink:
             break
     CommentLink = config.Suffix + CommentLink
-    CommentLink = 'http://m.douban.com/movie/subject/21318488/comments?page=1233&session=f6e6885a'
+    CommentLink = 'http://m.douban.com/movie/subject/21318488/comments?page=1233'
     moviec = pq(url=CommentLink)
-    f = open(config.CommentDir+movieid, 'w')
+    try:
+        f = open(config.CommentDir+movieid, 'w')
+    except:
+        return
     print "crawling movie:"+name
     while True:
 
@@ -32,6 +36,8 @@ def comment(name, link, movieid):
         PageLoad = None
         CommentItems = Body('span')
         Page = Body('a')
+        if CommentItems.size() < 4:
+            break
         CommentItems.pop()
         odd = 0
         for lines in CommentItems:
@@ -66,6 +72,7 @@ def comment(name, link, movieid):
         if PageLoad == None:
             break
     f.close()
+    os.system('chmod 444 '+ config.CommentDir+movieid)
 
 if __name__ == '__main__':
     comment(u'消失的爱人', 'http://m.douban.com/movie/subject/21318488/?session=55b6a7d1', 'ceshi')

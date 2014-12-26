@@ -5,6 +5,7 @@ from pyquery import PyQuery as pq
 import moviecom
 import config
 import re
+import os
 
 reload(sys)
 sys.setdefaultencoding('UTF-8')
@@ -32,7 +33,12 @@ while True:
             idnum = re.match('/movie/subject/(\d+)/', link).group(1)
             link = config.Suffix + link
             print text
-            moviecom.comment(text, link, idnum)
+            try:
+                moviecom.comment(text, link, idnum)
+            except:
+                os.system('chmod 444 '+ config.CommentDir + str(idnum))
+                continue
+            os.system('chmod 444 '+ config.CommentDir + str(idnum))
         elif text == u'下一页':
             PageLoad = link
  #           print PageLoad
