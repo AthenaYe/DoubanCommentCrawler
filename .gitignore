@@ -1,4 +1,5 @@
-log
+*log
+*err
 *.pyc
 *.swp
 doubanmovie/moviecomment
