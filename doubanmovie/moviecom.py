@@ -87,11 +87,13 @@ def comment(name, link, movieid):
                 break
         f.close()
         os.system('chmod 444 '+ config.CommentDir+movieid)
+        time.sleep(120)
     except:
         print "you mafan le!!"
         print "page:"+ str(countpage)
         print PageLoad
         traceback.print_exc()
+        time.sleep(120)
         return
 
 if __name__ == '__main__':

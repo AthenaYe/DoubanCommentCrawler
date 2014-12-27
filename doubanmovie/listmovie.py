@@ -40,7 +40,6 @@ while True:
                 os.system('chmod 444 '+ config.CommentDir + str(idnum))
                 continue
             os.system('chmod 444 '+ config.CommentDir + str(idnum))
-            time.sleep(120)
         elif text == u'下一页':
             PageLoad = link
  #           print PageLoad
