@@ -1,17 +1,22 @@
 #!/usr/bin/env python2
 # -*- coding:utf-8 -*-
-import config
 import sys
-from pyquery import PyQuery as pq
 import re
 import json
 import os
-import traceback
 import time
+import traceback
+import logging
 
+from pyquery import PyQuery as pq
+
+import config
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
+logger = logging.getLogger(__name__)
+
 
 def getLink(link):
     movie = pq(url=link)
@@ -22,8 +27,10 @@ def getLink(link):
         if 'comment' in CommentLink:
             break
     CommentLink = config.Suffix + CommentLink
-    print CommentLink
+    logger.debug("CommentLink: %s", CommentLink)
+
     return CommentLink
+
 
 def makejson(CommentItems, name, link, f):
     commentdict = {}
@@ -51,14 +58,15 @@ def makejson(CommentItems, name, link, f):
             commentdict['comment'] = pq(lines).text()
         odd += 1
 
-def comment(name, link, movieid):
 
+def comment(name, link, movieid):
+    logger.info("Crawling move: %s", name)
     moviec = pq(url=getLink(link))
     try:
         f = open(config.CommentDir+movieid, 'w')
     except:
         return
-    print "crawling movie:"+name
+
     countpage = 0
     PageLoad = ''
     try:
@@ -88,13 +96,17 @@ def comment(name, link, movieid):
         f.close()
         os.system('chmod 444 '+ config.CommentDir+movieid)
         time.sleep(120)
+    except KeyboardInterrupt:
+        logger.error("Bye")
+        raise
     except:
-        print "you mafan le!!"
-        print "page:"+ str(countpage)
-        print PageLoad
+        logger.error("what ghost!!")
+        logger.error("page: %s", countpage)
+        logger.error("%s", PageLoad)
         traceback.print_exc()
         time.sleep(120)
         return
+
 
 if __name__ == '__main__':
     comment(u'啥啥啥', 'http://m.douban.com/movie/subject/10463953/', 'ceshi')

@@ -1,6 +1,0 @@
-Traceback (most recent call last):
-  File "listmovie.py", line 35, in <module>
-    moviecom.comment(text, link, idnum)
-  File "/home/athena/workspace/CrawComments/doubanmovie/moviecom.py", line 34, in comment
-    CommentItems.pop()
-IndexError: pop from empty list
