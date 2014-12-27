@@ -7,6 +7,7 @@ import re
 import json
 import os
 import traceback
+import time
 
 
 reload(sys)
@@ -63,6 +64,8 @@ def comment(name, link, movieid):
     try:
         while True:
             countpage += 1
+            if countpage % 30000 == 0:
+                time.sleep(120)
             Body = pq(moviec('div[class="list"]'))
             Body.pop()
             PageLoad = None
@@ -92,6 +95,6 @@ def comment(name, link, movieid):
         return
 
 if __name__ == '__main__':
-    comment(u'少年时代', 'http://m.douban.com/movie/subject/2209575/', 'ceshi')
+    comment(u'啥啥啥', 'http://m.douban.com/movie/subject/10463953/', 'ceshi')
 
 # vim: ts=4 sw=4 sts=4 expandtab

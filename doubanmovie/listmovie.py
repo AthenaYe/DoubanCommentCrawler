@@ -6,6 +6,7 @@ import moviecom
 import config
 import re
 import os
+import time
 
 reload(sys)
 sys.setdefaultencoding('UTF-8')
@@ -39,6 +40,7 @@ while True:
                 os.system('chmod 444 '+ config.CommentDir + str(idnum))
                 continue
             os.system('chmod 444 '+ config.CommentDir + str(idnum))
+            time.sleep(120)
         elif text == u'下一页':
             PageLoad = link
  #           print PageLoad
@@ -47,6 +49,7 @@ while True:
     else:
  #       print PageLoad
         douban = pq(url=config.Suffix+PageLoad)
+
 #    print urls
 
 # vim: ts=4 sw=4 sts=4 expandtab
