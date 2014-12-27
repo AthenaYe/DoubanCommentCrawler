@@ -64,7 +64,7 @@ def comment(name, link, movieid):
     try:
         while True:
             countpage += 1
-            if countpage % 30000 == 0:
+            if countpage % 30000 == 0 and countpage != 0:
                 time.sleep(120)
             Body = pq(moviec('div[class="list"]'))
             Body.pop()
