@@ -10,28 +10,27 @@ from pyquery import PyQuery as pq
 
 import config
 import moviecom
+import htmlparser
 
 
 reload(sys)
-sys.setdefaultencoding('UTF-8')
+sys.setdefaultencoding('utf-8')
 
 
 def main():
     logger = logging.getLogger(__name__)
     logger.info("System start")
-    douban = pq(url=config.DoubanMovieUrl)
+    try:
+        douban = pq(htmlparser.parser(config.DoubanMovieUrl))
+    except:
+        logger.exception()
+        logger.error("main list logging error")
+        return
 
     counter = 4
 
-
     while True:
-    #    if not counter:
-    #        break
-    #    counter -= 1
         Body = pq(douban('div[class="movie-items list"]'))
-    #    MovieItems = Body("a").filter(lambda i:pq(this).text() != u'下一页' and pq(this).text() != u'最后页')
-    #    PageLoad = Body("a").filter(lambda i:pq(this).text() == u'下一页')
-    #    print PageLoad
         PageLoad = None
         MovieItems = Body("a")
         for divs in MovieItems:
@@ -50,9 +49,10 @@ def main():
                     logger.info("Bye Bye")
                     return
                 except:
-                    os.system('chmod 444 '+ config.CommentDir + str(idnum))
+                    logger.exception()
                     continue
-                os.system('chmod 444 '+ config.CommentDir + str(idnum))
+                finally:
+                    os.system('chmod 444 '+ config.CommentDir + str(idnum))
             elif text == u'下一页':
                 PageLoad = link
     #           print PageLoad
@@ -60,7 +60,12 @@ def main():
             break
         else:
     #       print PageLoad
-            douban = pq(url=config.Suffix+PageLoad)
+            try:
+                douban = pq(htmlparser.parser(config.Suffix+PageLoad))
+            except:
+                logger.exception()
+                logger.error("listmovie: flip next page time out")
+                return
 
 
 

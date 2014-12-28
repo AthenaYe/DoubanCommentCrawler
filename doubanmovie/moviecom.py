@@ -5,12 +5,12 @@ import re
 import json
 import os
 import time
-import traceback
 import logging
 
 from pyquery import PyQuery as pq
 
 import config
+import htmlparser
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 def getLink(link):
-    movie = pq(url=link)
+    movie = pq(htmlparser.parser(link))
     aa = movie('a')
     CommentLink = None
     for divs in aa:
@@ -38,15 +38,11 @@ def makejson(CommentItems, name, link, f):
     for lines in CommentItems:
         if odd % 2 == 1:
             tmp = pq(lines).text()
-            if odd % 100 == 0:
-                print odd
-        #    print tmp
             whole = re.match('-(.*) \(([1-5])', tmp)
             if not whole:
                 continue
             user = whole.group(1)
             star = int(whole.group(2))
-      #      if star in [1,5]:
             commentdict['moviename'] = name
             commentdict['movielink'] = link
             commentdict['user'] = user
@@ -61,14 +57,15 @@ def makejson(CommentItems, name, link, f):
 
 def comment(name, link, movieid):
     logger.info("Crawling move: %s", name)
-    moviec = pq(url=getLink(link))
     try:
+        moviec = pq(htmlparser.parser(getLink(link)))
         f = open(config.CommentDir+movieid, 'w')
     except:
+        logger.exception("wow")
         return
-
     countpage = 0
     PageLoad = ''
+    print name
     try:
         while True:
             countpage += 1
@@ -89,23 +86,22 @@ def comment(name, link, movieid):
                 if pq(lines).text() == u'下一页':
                     PageLoad = pq(lines).attr('href')
                     PageLoad = config.Suffix + PageLoad
-                    moviec = pq(url=PageLoad)
+                    moviec = pq(htmlparser.parser(PageLoad))
                     break
             if PageLoad == None:
                 break
-        f.close()
-        os.system('chmod 444 '+ config.CommentDir+movieid)
         time.sleep(120)
     except KeyboardInterrupt:
         logger.error("Bye")
         raise
     except:
-        logger.error("what ghost!!")
-        logger.error("page: %s", countpage)
-        logger.error("%s", PageLoad)
-        traceback.print_exc()
+        logger.exception("what ghost!! page: %d, %s", countpage, PageLoad)
         time.sleep(120)
         return
+    finally:
+        f.close()
+        os.system('chmod 444 '+ config.CommentDir+movieid)
+
 
 
 if __name__ == '__main__':
