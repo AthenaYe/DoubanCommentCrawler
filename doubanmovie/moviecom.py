@@ -99,6 +99,7 @@ def comment(name, link, movieid):
     except:
         logger.exception("what ghost!! page: %d, %s", countpage, PageLoad)
         time.sleep(120)
+        raise
         return
     finally:
         f.close()
