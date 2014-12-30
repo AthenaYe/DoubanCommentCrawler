@@ -27,8 +27,6 @@ def main():
         logger.error("main list logging error")
         return
 
-    counter = 4
-
     while True:
         Body = pq(douban('div[class="movie-items list"]'))
         PageLoad = None
@@ -52,7 +50,8 @@ def main():
                     logger.exception()
                     continue
                 finally:
-                    os.system('chmod 444 '+ config.CommentDir + str(idnum))
+                    if os.path.exists(config.CommentDir+str(idnum)):
+                        os.system('chmod 444 '+ config.CommentDir + str(idnum))
             elif text == u'下一页':
                 PageLoad = link
     #           print PageLoad
