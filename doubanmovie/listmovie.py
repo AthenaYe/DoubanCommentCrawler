@@ -59,7 +59,7 @@ def main():
         if PageLoad == None:
             break
         else:
-    #       print PageLoad
+            logger.info("nextpage:"+PageLoad)
             try:
                 douban = pq(htmlparser.parser(config.Suffix+PageLoad))
             except:

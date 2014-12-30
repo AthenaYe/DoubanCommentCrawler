@@ -72,6 +72,8 @@ def comment(name, link, movieid):
             if countpage % 30000 == 0 and countpage != 0:
                 time.sleep(120)
             Body = pq(moviec('div[class="list"]'))
+            if Body.size() < 2:
+                break;
             Body.pop()
             PageLoad = None
             CommentItems = Body('span')
