@@ -26,7 +26,6 @@ def main():
         logger.exception()
         logger.error("main list logging error")
         return
-
     while True:
         Body = pq(douban('div[class="movie-items list"]'))
         PageLoad = None
