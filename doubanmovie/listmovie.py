@@ -10,7 +10,8 @@ from pyquery import PyQuery as pq
 
 import config
 import moviecom
-import htmlparser
+import ..shared.htmlparser
+import ..shared.config
 
 
 reload(sys)

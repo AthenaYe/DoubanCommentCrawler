@@ -10,7 +10,8 @@ import logging
 from pyquery import PyQuery as pq
 
 import config
-import htmlparser
+import ..shared.config
+import ..shared.htmlparser
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
