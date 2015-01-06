@@ -9,9 +9,9 @@ import logging
 
 from pyquery import PyQuery as pq
 
-import config
-import ..shared.config
-import ..shared.htmlparser
+from . import config
+from ..shared import loggerconfig
+from ..shared import htmlgetter
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 
 def getLink(link):
-    movie = pq(htmlparser.parser(link))
+    movie = pq(htmlgetter.getter(link))
     aa = movie('a')
     CommentLink = None
     for divs in aa:
@@ -59,7 +59,7 @@ def makejson(CommentItems, name, link, f):
 def comment(name, link, movieid):
     logger.info("Crawling move: %s", name)
     try:
-        moviec = pq(htmlparser.parser(getLink(link)))
+        moviec = pq(htmlgetter.getter(getLink(link)))
         f = open(config.CommentDir+movieid, 'w')
     except:
         logger.exception("wow")
@@ -89,7 +89,7 @@ def comment(name, link, movieid):
                 if pq(lines).text() == u'下一页':
                     PageLoad = pq(lines).attr('href')
                     PageLoad = config.Suffix + PageLoad
-                    moviec = pq(htmlparser.parser(PageLoad))
+                    moviec = pq(htmlgetter.getter(PageLoad))
                     break
             if PageLoad == None:
                 break
