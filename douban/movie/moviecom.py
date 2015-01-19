@@ -6,11 +6,9 @@ import json
 import os
 import time
 import logging
-
 from pyquery import PyQuery as pq
 
-from . import config
-from ..shared import loggerconfig
+import config
 from ..shared import htmlgetter
 
 reload(sys)
@@ -60,6 +58,8 @@ def comment(name, link, movieid):
     logger.info("Crawling move: %s", name)
     try:
         moviec = pq(htmlgetter.getter(getLink(link)))
+        print("Path at terminal when executing this file")
+        print(os.getcwd() + "\n")
         f = open(config.CommentDir+movieid, 'w')
     except:
         logger.exception("wow")
