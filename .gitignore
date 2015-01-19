@@ -2,5 +2,6 @@
 *err
 *.pyc
 *.swp
-doubancomment
+moviecomment
+musiccomment
 ceshi*
