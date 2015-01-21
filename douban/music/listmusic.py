@@ -43,6 +43,7 @@ def main():
                 logger.info(text)
                 try:
                     musiccom.comment(text, link, idnum)
+                #    print text
                 except KeyboardInterrupt:
                     logger.info("Bye Bye")
                     return

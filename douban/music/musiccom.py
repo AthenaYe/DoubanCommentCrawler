@@ -19,6 +19,7 @@ sys.setdefaultencoding('utf-8')
 logger = logging.getLogger(__name__)
 
 def getLink(link):
+    #logger.info('infunction getLink')
     music = pq(htmlgetter.getter(link))
  #   print link
  #   print music
