@@ -54,7 +54,7 @@ def main():
                         os.system('chmod 444 '+ config.CommentDir + str(idnum))
         PageLoad = pq(Page('a')[-1]).attr('href')
         print PageLoad
-        break
+    #    break
         if PageLoad == None:
             break
         else:

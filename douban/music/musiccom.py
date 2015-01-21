@@ -20,18 +20,35 @@ logger = logging.getLogger(__name__)
 
 def getLink(link):
     music = pq(htmlgetter.getter(link))
-    print link
-    print music
-    span = pq(music('span[class="pl"]'))
-    print span
-    commentlink = pq(span('a')).attr('href')
+ #   print link
+ #   print music
+    divs = pq(music('div[class="mod-hd"]'))
+    aalink = divs('a')
+    commentlink = None
+    for aa in aalink:
+        clink = pq(aa).attr('href')
+        if 'comments' in clink:
+            commentlink = clink
     if commentlink is None:
         logger.exception("strange music"+link)
         return None
+  #  print commentlink
     return commentlink
 
+def starparser(sstr):
+    if sstr == u'力荐':
+        return 5
+    elif sstr == u'推荐':
+        return 4
+    elif sstr == u'还行':
+        return 3
+    elif sstr == u'较差':
+        return 2
+    else: return 1
+
 def makejson(comment, name, link, user, star, f):
-    print comment, name, link, user, star
+#    print comment, name, link, user, star
+    star = starparser(star)
     commentdict = {}
     commentdict['comment'] = comment
     commentdict['moviename'] = name
@@ -46,8 +63,8 @@ def comment(name, link, musicid):
     logger.info("Crawling music: %s", name)
     try:
         startlink = getLink(link)
-        print link
-        print startlink
+    #    print link
+    #    print startlink
         musicc = pq(htmlgetter.getter(startlink))
 #        print("Path at terminal when executing this file")
 #        print(os.getcwd() + "\n")
@@ -67,8 +84,12 @@ def comment(name, link, musicid):
                 break;
             for lines in Body:
                 lines = pq(lines)
-                commentitem = pq(lines('p[class="comment-item"]')).text()
-                rating = pq(lines('span[class="user-stars allstar30 rating"]')).attr('title')
+             #   print lines
+                commentitem = pq(lines('p[class="comment-content"]')).text()
+                rating = pq(lines('span[class="comment-info"]'))('span')
+                if len(rating) < 2:
+                    continue
+                rating = pq(rating[1]).attr('title')
                 if rating is None:
                     continue
                 finduser = pq(lines("a"))
@@ -76,19 +97,22 @@ def comment(name, link, musicid):
                 for usernames in finduser:
                     usernames = pq(usernames)
                     href = usernames.attr("href")
+                #    print usernames
                     if 'people' in href:
-                        user = usernames.text()
+                    #    print href
+                        user = re.match('.*/people/(.*)/', href).group(1)
                         break
                 makejson(commentitem, name, link, user, rating, f)
-            break
+         #   break
             musicc = pq(htmlgetter.getter(startlink + config.CommentSuffix + str(countpage)))
-
+        logger.info('sleeping')
         time.sleep(120)
+        logger.info('end sleep')
     except KeyboardInterrupt:
         logger.error("Bye")
         raise
     except:
-        logger.exception("what ghost!! page: %d", countpage)
+        logger.exception("what ghost!! error in page: %d", countpage)
         time.sleep(120)
         raise
         return

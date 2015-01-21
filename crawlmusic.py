@@ -9,10 +9,10 @@ import douban.music.listmusic as listmusic
 import douban.shared.htmlgetter as htmlgetter
 import douban.music.musiccom as musiccom
 
-musiccom.getLink('http://music.douban.com/subject/25811077/')
+#musiccom.getLink('http://music.douban.com/subject/25811077/')
 
 #test = pq(htmlgetter.getter('http://music.douban.com/tag/2014'))
-#listmusic.main()
+listmusic.main()
 #musiccom.comment("shashasha", "http://music.douban.com/subject/25811077/", "ceshi")
 
 
