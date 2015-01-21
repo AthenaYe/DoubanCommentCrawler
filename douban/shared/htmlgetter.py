@@ -7,6 +7,7 @@ from pyquery import PyQuery as pq
 from lxml import etree
 import time
 import logging
+from . import loggerconfig
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -18,7 +19,7 @@ def getter(link):
     def _getter(link):
         link = requests.get(link, timeout=100)
         return link.text.encode('utf-8')
-
+#    logger.info('in getter:')
     for _ in range(5):
     #    print 'getter'+link
         try:

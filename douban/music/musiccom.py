@@ -19,7 +19,7 @@ sys.setdefaultencoding('utf-8')
 logger = logging.getLogger(__name__)
 
 def getLink(link):
-    #logger.info('infunction getLink')
+ #   logger.info('infunction getLink')
     music = pq(htmlgetter.getter(link))
  #   print link
  #   print music
@@ -34,6 +34,7 @@ def getLink(link):
         logger.exception("strange music"+link)
         return None
   #  print commentlink
+ #   logger.info('leaving getlink')
     return commentlink
 
 def starparser(sstr):
@@ -82,7 +83,9 @@ def comment(name, link, musicid):
                 time.sleep(120)
             Body = pq(musicc('li[class="comment-item"]'))
             if Body is None:
-                break;
+                break
+            if len(Body) < 5:
+                break
             for lines in Body:
                 lines = pq(lines)
              #   print lines
@@ -106,6 +109,7 @@ def comment(name, link, musicid):
                 makejson(commentitem, name, link, user, rating, f)
          #   break
             musicc = pq(htmlgetter.getter(startlink + config.CommentSuffix + str(countpage)))
+         #   logger.info('flip page')
         logger.info('sleeping')
         time.sleep(120)
         logger.info('end sleep')
