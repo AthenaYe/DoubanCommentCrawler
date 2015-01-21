@@ -8,7 +8,7 @@ import time
 import logging
 from pyquery import PyQuery as pq
 
-import config
+from . import config
 from ..shared import htmlgetter
 
 reload(sys)
@@ -55,7 +55,7 @@ def makejson(CommentItems, name, link, f):
 
 
 def comment(name, link, movieid):
-    logger.info("Crawling move: %s", name)
+    logger.info("Crawling movie: %s", name)
     try:
         moviec = pq(htmlgetter.getter(getLink(link)))
         print("Path at terminal when executing this file")

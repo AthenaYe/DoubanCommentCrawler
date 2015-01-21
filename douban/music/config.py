@@ -4,7 +4,7 @@ from ..shared  import loggerconfig
 
 DoubanMusicUrl = "http://music.douban.com/tag/2014"
 
-Suffix = 'http://m.douban.com'
+CommentSuffix = 'hot?p='
 CommentDir = 'data/musiccomment/'
 
 

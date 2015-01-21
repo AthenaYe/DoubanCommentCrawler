@@ -20,6 +20,7 @@ def getter(link):
         return link.text.encode('utf-8')
 
     for _ in range(5):
+        print 'getter'+link
         try:
             ret = _getter(link)
         except requests.ConnectionError:
